@@ -1,0 +1,27 @@
+<div class="user-information">
+  <span class="user-name"><%= current_user.name %></span>
+  <%= render :partial => "users/stats", :locals => {:user => current_user} %>
+
+  <%= form_for @message do |f| %>
+      <%= render :partial => "shared/form_error_messages", :locals => {:model_object => @message} %>
+      <%= f.text_area :content, :placeholder => "What's on your mind?" %>
+      <%= f.submit "Post" %>
+  <% end %>
+</div>
+
+<div class="user-post">
+  <h2>Feed</h2>
+
+  <% if current_user.feed.empty? %>
+      <p class="none">Not have any post yet.</p>
+  <% else %>
+      <% current_user.feed.each do |post| %>
+          <div class="post">
+            <p class="post-owner">
+              <%= link_to post.user.name, user_url(post.user_id) %>
+            </p>
+            <%= render :partial => "post_body", :locals => {:post => post} %>
+          </div>
+      <% end %>
+  <% end %>
+</div>
